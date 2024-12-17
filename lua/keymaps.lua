@@ -5,6 +5,8 @@
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+vim.keymap.set('n', '<leader>ex', vim.cmd.Ex)
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -31,6 +33,13 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- fugitive remaps
+vim.keymap.set('n', '<leader>go', '<cmd>diffget //2<cr>', { desc = 'Get the --ours git changes' })
+vim.keymap.set('n', '<leader>gt', '<cmd>diffget //3<cr>', { desc = 'Get the --theirs git changes' })
+
+vim.keymap.set('n', '<leader>rc', ':vsplit ~/.config/nvim/init.lua<CR>', { desc = 'Open init.lua in new split' })
+vim.keymap.set('n', '<leader>gd', ':lua vim.diagnostic.open_float()<CR>', { desc = 'Open tooltip with diagnostic on current line' })
+-- vim.diagnostic.open_float()
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
