@@ -54,4 +54,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- vim: ts=2 sts=2 sw=2 et
+-- Neotree remaps
+vim.keymap.set('n', '<leader>ft', ':Neotree toggle=true<CR>', { desc = 'Toggle Neotree file tree' })
