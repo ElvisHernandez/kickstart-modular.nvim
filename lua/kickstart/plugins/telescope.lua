@@ -55,8 +55,10 @@ return {
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
-        --
         defaults = {
+          path_display = {
+            shorten = { len = 3, exclude = { 1, -1 } },
+          },
           mappings = {
             n = {
               ['<c-d>'] = require('telescope.actions').delete_buffer,
@@ -67,7 +69,9 @@ return {
             },
           },
         },
-        -- pickers = {}
+        pickers = {
+          lsp_references = { fname_width = 100 },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),

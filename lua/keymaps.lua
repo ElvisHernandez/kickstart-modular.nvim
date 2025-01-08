@@ -59,8 +59,8 @@ vim.keymap.set('n', '<leader>ft', ':Neotree toggle=true<CR>', { desc = 'Toggle N
 vim.keymap.set('n', '<leader>rt', ':Neotree reveal<cr>', { desc = 'Reveal the current file in the file tree' })
 
 -- Go to previous and next buffers
-vim.keymap.set('n', '<leader>pb', ':bprev<cr>', { desc = 'Go to previous buffer' })
-vim.keymap.set('n', '<leader>nb', ':bnext<cr>', { desc = 'Go to next buffer' })
+vim.keymap.set('n', '<leader>bp', ':bprev<cr>', { desc = 'Go to previous buffer' })
+vim.keymap.set('n', '<leader>bn', ':bnext<cr>', { desc = 'Go to next buffer' })
 
 -- Swap open buffers
 vim.keymap.set('n', '<leader>rr', '<c-w>r', { desc = 'Rotate open buffers counter-clockwise (I think??)' })

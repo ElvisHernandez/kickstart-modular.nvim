@@ -24,6 +24,7 @@ require('lazy').setup({
   -- include a plugin definition from file lua/path/name.lua
 
   require 'kickstart/plugins/neo-tree',
+
   require 'kickstart/plugins/harpoon',
 
   require 'kickstart/plugins/gitsigns',
