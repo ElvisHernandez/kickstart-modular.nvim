@@ -38,6 +38,7 @@ vim.keymap.set('n', '<leader>go', '<cmd>diffget //2<cr>', { desc = 'Get the --ou
 vim.keymap.set('n', '<leader>gt', '<cmd>diffget //3<cr>', { desc = 'Get the --theirs git changes' })
 
 vim.keymap.set('n', '<leader>rc', ':vsplit ~/.config/nvim/init.lua<CR>', { desc = 'Open init.lua in new split' })
+vim.keymap.set('n', '<leader>rs', '<C-w>=', { desc = 'Make all splits equal size' })
 vim.keymap.set('n', '<leader>gd', ':lua vim.diagnostic.open_float()<CR>', { desc = 'Open tooltip with diagnostic on current line' })
 -- vim.diagnostic.open_float()
 -- [[ Basic Autocommands ]]
@@ -64,3 +65,5 @@ vim.keymap.set('n', '<leader>bn', ':bnext<cr>', { desc = 'Go to next buffer' })
 
 -- Swap open buffers
 vim.keymap.set('n', '<leader>rr', '<c-w>r', { desc = 'Rotate open buffers counter-clockwise (I think??)' })
+
+vim.keymap.set('n', '<leader>ma', 'V$%zf', { desc = 'This will fold a block that starts and ends with some type of bracket (,{,[,<' })

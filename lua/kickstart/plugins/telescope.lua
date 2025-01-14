@@ -57,7 +57,7 @@ return {
         --  All the info you're looking for is in `:help telescope.setup()`
         defaults = {
           path_display = {
-            shorten = { len = 3, exclude = { 1, -1 } },
+            shorten = { len = 5, exclude = { 1, -1 } },
           },
           mappings = {
             n = {
