@@ -39,25 +39,25 @@ require('lazy').setup({
 
   require 'kickstart/plugins/cmp',
 
-  require 'kickstart/plugins/tokyonight',
-  -- {
-  --   'rose-pine/neovim',
-  --   name = 'rose-pine',
-  --   priority = 1000,
-  --   init = function()
-  --     require('rose-pine').setup {
-  --       variant = 'main',
-  --       dark_variant = 'main',
-  --
-  --       styles = {
-  --         italic = false,
-  --         bold = true,
-  --       },
-  --     }
-  --
-  --     vim.cmd.colorscheme 'rose-pine'
-  --   end,
-  -- },
+  -- require 'kickstart/plugins/tokyonight',
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    priority = 1000,
+    init = function()
+      require('rose-pine').setup {
+        variant = 'main',
+        dark_variant = 'main',
+
+        styles = {
+          italic = false,
+          bold = true,
+        },
+      }
+
+      vim.cmd.colorscheme 'rose-pine'
+    end,
+  },
 
   require 'kickstart/plugins/todo-comments',
 

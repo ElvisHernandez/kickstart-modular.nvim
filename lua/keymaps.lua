@@ -9,6 +9,12 @@ vim.keymap.set('n', '<leader>ex', vim.cmd.Ex)
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>do', function () 
+	vim.diagnostic.disable(0)
+end, { desc = 'Disable diagnostics for current buffer' })
+vim.keymap.set('n', '<leader>de', function() 
+	vim.diagnostic.enable(0)
+end, { desc = 'Enable diagnostics for current buffer' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
