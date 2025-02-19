@@ -77,3 +77,11 @@ vim.o.shiftwidth = 4
 --   pattern = { '*.*' },
 --   command = 'silent! loadview',
 -- })
+--
+
+-- Without these lines neovim was taking about ~2 seconds to properly load python files
+-- do to having
+vim.g.python3_host_prog = '$HOME/.pyenv/shims/python'
+vim.g.python_host_prog = '$HOME/.pyenv/shims/python'
+-- vim.g.python3_host_prog = ''
+-- vim.g.loaded_python3_provider = 0

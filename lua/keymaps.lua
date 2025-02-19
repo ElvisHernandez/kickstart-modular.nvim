@@ -9,11 +9,11 @@ vim.keymap.set('n', '<leader>ex', vim.cmd.Ex)
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>do', function () 
-	vim.diagnostic.disable(0)
+vim.keymap.set('n', '<leader>dd', function()
+  vim.diagnostic.disable(0)
 end, { desc = 'Disable diagnostics for current buffer' })
-vim.keymap.set('n', '<leader>de', function() 
-	vim.diagnostic.enable(0)
+vim.keymap.set('n', '<leader>de', function()
+  vim.diagnostic.enable(0)
 end, { desc = 'Enable diagnostics for current buffer' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -62,7 +62,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- Neotree remaps
-vim.keymap.set('n', '<leader>ft', ':Neotree toggle=true<CR>', { desc = 'Toggle Neotree file tree' })
+vim.keymap.set('n', '<leader>ft', ':Neotree toggle=true<CR>', { desc = 'Toggle Neotree file tree', silent = true })
 vim.keymap.set('n', '<leader>rt', ':Neotree reveal<cr>', { desc = 'Reveal the current file in the file tree' })
 
 -- Go to previous and next buffers
@@ -73,3 +73,11 @@ vim.keymap.set('n', '<leader>bn', ':bnext<cr>', { desc = 'Go to next buffer' })
 vim.keymap.set('n', '<leader>rr', '<c-w>r', { desc = 'Rotate open buffers counter-clockwise (I think??)' })
 
 vim.keymap.set('n', '<leader>ma', 'V$%zf', { desc = 'This will fold a block that starts and ends with some type of bracket (,{,[,<' })
+
+-- Quickfix list
+vim.keymap.set('n', '<leader>cn', ':cnext<cr>', { desc = 'Go to next item in quickfix list' })
+vim.keymap.set('n', '<leader>cp', ':cprev<cr>', { desc = 'Go to previous item in quickfix list' })
+
+-- tab remaps
+vim.keymap.set('n', '<leader>tn', ':tabnext<cr>', { desc = 'Go to next tab' })
+vim.keymap.set('n', '<leader>tp', ':tabprev<cr>', { desc = 'Go to previous tab' })

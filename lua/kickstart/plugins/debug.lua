@@ -20,19 +20,16 @@ return {
     -- Installs the debug adapters for you
     'williamboman/mason.nvim',
     'jay-babu/mason-nvim-dap.nvim',
-
-    -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
   },
   keys = function(_, keys)
     local dap = require 'dap'
     local dapui = require 'dapui'
     return {
       -- Basic debugging keymaps, feel free to change to your liking!
-      { '<F5>', dap.continue, desc = 'Debug: Start/Continue' },
-      { '<F1>', dap.step_into, desc = 'Debug: Step Into' },
-      { '<F2>', dap.step_over, desc = 'Debug: Step Over' },
-      { '<F3>', dap.step_out, desc = 'Debug: Step Out' },
+      { '<leader>dc', dap.continue, desc = 'Debug: Start/Continue' },
+      { '<leader>dsi', dap.step_into, desc = 'Debug: Step Into' },
+      -- { '<leader>dso', dap.step_over, desc = 'Debug: Step Over' },
+      -- { '<F3>', dap.step_out, desc = 'Debug: Step Out' },
       { '<leader>b', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
       {
         '<leader>B',
@@ -63,7 +60,8 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
+        -- 'delve', -- Go
+        'debugpy', -- Python
       },
     }
 
@@ -89,16 +87,76 @@ return {
       },
     }
 
+    vim.keymap.set('n', '<leader>dt', dapui.toggle, { desc = 'Toggles the debugger ui' })
+
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
-    -- Install golang specific config
-    require('dap-go').setup {
-      delve = {
-        -- On Windows delve must be run attached or it crashes.
-        -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-        detached = vim.fn.has 'win32' == 0,
+    -- Python adapter setup
+    dap.adapters.python = {
+      type = 'executable',
+      command = vim.fn.stdpath 'data' .. '/mason/packages/debugpy/venv/bin/python',
+      args = { '-m', 'debugpy.adapter' },
+    }
+
+    dap.configurations.python = {
+      {
+        name = 'Python: FastAPI',
+        type = 'python',
+        request = 'launch',
+        module = 'uvicorn',
+        args = {
+          'subscriptions.commands:create_app',
+          '--reload',
+          '--factory',
+          '--proxy-headers',
+          '--port',
+          '8080',
+        },
+        env = {
+          debug = 'true',
+        },
+        envFile = vim.fn.getcwd() .. '/.env',
+        justMyCode = false,
+        console = 'integratedTerminal',
+      },
+      {
+        name = 'Python: Kafka Consumer',
+        type = 'python',
+        request = 'launch',
+        module = 'subscriptions.kafka.consumers',
+        pythonPath = function()
+          -- If using Poetry
+          if vim.fn.filereadable 'pyproject.toml' == 1 then
+            return vim.fn.trim(vim.fn.system 'poetry env info --path') .. '/bin/python'
+          end
+          -- If using Pyenv
+          if vim.fn.getenv 'PYENV_VERSION' ~= vim.NIL then
+            return vim.fn.trim(vim.fn.system 'pyenv which python')
+          end
+          -- If using a Virtualenv
+          if vim.fn.getenv 'VIRTUAL_ENV' ~= vim.NIL then
+            return vim.fn.getenv 'VIRTUAL_ENV' .. '/bin/python'
+          end
+          -- Default fallback
+          return 'python'
+        end,
+
+        envFile = vim.fn.getcwd() .. '/.env',
+        env = function()
+          local env_file = vim.fn.getcwd() .. '/.env'
+          local env_vars = {}
+          for line in io.lines(env_file) do
+            local key, value = line:match '([^=]+)=(.*)'
+            if key and value then
+              env_vars[key] = value
+            end
+          end
+          return env_vars
+        end,
+        justMyCode = false,
+        console = 'integratedTerminal',
       },
     }
   end,
