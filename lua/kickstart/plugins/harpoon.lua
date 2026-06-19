@@ -8,6 +8,33 @@ return {
     -- REQUIRED
     harpoon:setup()
 
+    -----------------------------------------------------------
+    -----------------------------------------------------------
+    -- Custom list functions/keymaps
+    vim.keymap.set('n', '<leader>hs', function()
+      local ok, name = pcall(vim.fn.input, 'Set current harpoon list name: ')
+
+      if not ok then
+        return
+      end
+
+      if name ~= '' then
+        harpoon.data:set_current_list_name(name)
+      else
+        print 'No list name entered'
+      end
+    end, { desc = 'Set current harpoon list name' })
+
+    vim.keymap.set('n', '<leader>hl', function()
+      harpoon:show_lists()
+    end, { desc = 'Show the current harpoon lists available' })
+
+    vim.keymap.set('n', '<leader>hd', function()
+      harpoon:delete_list()
+    end, { desc = 'Delete the current list' })
+    -----------------------------------------------------------
+    -----------------------------------------------------------
+
     harpoon:extend {
       UI_CREATE = function(cx)
         vim.keymap.set('n', '<c-v>', function()
@@ -21,6 +48,11 @@ return {
     end)
     vim.keymap.set('n', '<leader>hm', function()
       harpoon.ui:toggle_quick_menu(harpoon:list())
+    end)
+
+    vim.keymap.set('n', '<leader>hi', function()
+      local info = harpoon:info()
+      print(info.paths.data_path)
     end)
 
     -- Toggle previous & next buffers stored within Harpoon list

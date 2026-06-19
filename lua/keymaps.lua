@@ -50,17 +50,6 @@ vim.keymap.set('n', '<leader>gd', ':lua vim.diagnostic.open_float()<CR>', { desc
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
-
 -- Neotree remaps
 vim.keymap.set('n', '<leader>ft', ':Neotree toggle=true<CR>', { desc = 'Toggle Neotree file tree', silent = true })
 vim.keymap.set('n', '<leader>rt', ':Neotree reveal<cr>', { desc = 'Reveal the current file in the file tree' })
@@ -68,11 +57,14 @@ vim.keymap.set('n', '<leader>rt', ':Neotree reveal<cr>', { desc = 'Reveal the cu
 -- Go to previous and next buffers
 vim.keymap.set('n', '<leader>bp', ':bprev<cr>', { desc = 'Go to previous buffer' })
 vim.keymap.set('n', '<leader>bn', ':bnext<cr>', { desc = 'Go to next buffer' })
+vim.keymap.set('n', '<leader>on', ':only<cr>', { desc = 'Make current buffer the only buffer' })
 
 -- Swap open buffers
 vim.keymap.set('n', '<leader>rr', '<c-w>r', { desc = 'Rotate open buffers counter-clockwise (I think??)' })
-
 vim.keymap.set('n', '<leader>ma', 'V$%zf', { desc = 'This will fold a block that starts and ends with some type of bracket (,{,[,<' })
+
+-- Format commands
+vim.keymap.set('n', '<leader>fc', ':%!clang-format<CR>', { desc = 'Format cpp file' })
 
 -- Quickfix list
 vim.keymap.set('n', '<leader>cn', ':cnext<cr>', { desc = 'Go to next item in quickfix list' })

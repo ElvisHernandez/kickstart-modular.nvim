@@ -67,18 +67,6 @@ vim.o.shiftwidth = 4
 
 -- vim: ts=2 sts=2 sw=2 et
 
--- Saves buffer metadata about cursor location and folds to /Users/elvishernandez/.local/state/nvim/view
--- vim.opt.viewoptions = 'cursor,folds' -- Save cursor position and folds
--- vim.api.nvim_create_autocmd({ 'BufWinLeave' }, {
---   pattern = { '*.*' },
---   command = 'silent! mkview',
--- })
--- vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
---   pattern = { '*.*' },
---   command = 'silent! loadview',
--- })
---
-
 -- Without these lines neovim was taking about ~2 seconds to properly load python files
 -- do to having
 vim.g.python3_host_prog = '$HOME/.pyenv/shims/python'

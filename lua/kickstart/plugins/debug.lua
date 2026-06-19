@@ -20,6 +20,7 @@ return {
     -- Installs the debug adapters for you
     'williamboman/mason.nvim',
     'jay-babu/mason-nvim-dap.nvim',
+    'jbyuki/one-small-step-for-vimkind',
   },
   keys = function(_, keys)
     local dap = require 'dap'
@@ -46,6 +47,18 @@ return {
   config = function()
     local dap = require 'dap'
     local dapui = require 'dapui'
+
+    dap.configurations.lua = {
+      {
+        type = 'nlua',
+        request = 'attach',
+        name = 'Attach to running Neovim instance',
+      },
+    }
+
+    dap.adapters.nlua = function(callback, config)
+      callback { type = 'server', host = config.host or '127.0.0.1', port = config.port or 8086 }
+    end
 
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
@@ -88,76 +101,12 @@ return {
     }
 
     vim.keymap.set('n', '<leader>dt', dapui.toggle, { desc = 'Toggles the debugger ui' })
+    vim.keymap.set('n', '<leader>dl', function()
+      require('osv').launch { port = 8086 }
+    end, { noremap = true })
 
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
-
-    -- Python adapter setup
-    dap.adapters.python = {
-      type = 'executable',
-      command = vim.fn.stdpath 'data' .. '/mason/packages/debugpy/venv/bin/python',
-      args = { '-m', 'debugpy.adapter' },
-    }
-
-    dap.configurations.python = {
-      {
-        name = 'Python: FastAPI',
-        type = 'python',
-        request = 'launch',
-        module = 'uvicorn',
-        args = {
-          'subscriptions.commands:create_app',
-          '--reload',
-          '--factory',
-          '--proxy-headers',
-          '--port',
-          '8080',
-        },
-        env = {
-          debug = 'true',
-        },
-        envFile = vim.fn.getcwd() .. '/.env',
-        justMyCode = false,
-        console = 'integratedTerminal',
-      },
-      {
-        name = 'Python: Kafka Consumer',
-        type = 'python',
-        request = 'launch',
-        module = 'subscriptions.kafka.consumers',
-        pythonPath = function()
-          -- If using Poetry
-          if vim.fn.filereadable 'pyproject.toml' == 1 then
-            return vim.fn.trim(vim.fn.system 'poetry env info --path') .. '/bin/python'
-          end
-          -- If using Pyenv
-          if vim.fn.getenv 'PYENV_VERSION' ~= vim.NIL then
-            return vim.fn.trim(vim.fn.system 'pyenv which python')
-          end
-          -- If using a Virtualenv
-          if vim.fn.getenv 'VIRTUAL_ENV' ~= vim.NIL then
-            return vim.fn.getenv 'VIRTUAL_ENV' .. '/bin/python'
-          end
-          -- Default fallback
-          return 'python'
-        end,
-
-        envFile = vim.fn.getcwd() .. '/.env',
-        env = function()
-          local env_file = vim.fn.getcwd() .. '/.env'
-          local env_vars = {}
-          for line in io.lines(env_file) do
-            local key, value = line:match '([^=]+)=(.*)'
-            if key and value then
-              env_vars[key] = value
-            end
-          end
-          return env_vars
-        end,
-        justMyCode = false,
-        console = 'integratedTerminal',
-      },
-    }
   end,
 }
